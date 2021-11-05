@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<checkstyle version="8.8">
+<file name="D:\utente\Documents\progetto1819-bernerslee\src\main\java\it\uniba\exception\ConfigurationException.java">
+</file>
+<file name="D:\utente\Documents\progetto1819-bernerslee\src\main\java\it\uniba\exception\DeathJobException.java">
+</file>
+<file name="D:\utente\Documents\progetto1819-bernerslee\src\main\java\it\uniba\exception\ParameterException.java">
+</file>
+<file name="D:\utente\Documents\progetto1819-bernerslee\src\main\java\it\uniba\exception\ReadException.java">
+</file>
+<file name="D:\utente\Documents\progetto1819-bernerslee\src\main\java\it\uniba\main\AppMain.java">
+</file>
+<file name="D:\utente\Documents\progetto1819-bernerslee\src\main\java\it\uniba\sotorrent\GoogleDocsUtils.java">
+</file>
+<file name="D:\utente\Documents\progetto1819-bernerslee\src\main\java\it\uniba\sotorrent\ISOQuery.java">
+</file>
+<file name="D:\utente\Documents\progetto1819-bernerslee\src\main\java\it\uniba\sotorrent\SOQuery.java">
+</file>
+<file name="D:\utente\Documents\progetto1819-bernerslee\src\main\java\it\uniba\utils\Arguments.java">
+</file>
+<file name="D:\utente\Documents\progetto1819-bernerslee\src\main\java\it\uniba\utils\Control.java">
+</file>
+<file name="D:\utente\Documents\progetto1819-bernerslee\src\main\java\it\uniba\utils\Edge.java">
+</file>
+<file name="D:\utente\Documents\progetto1819-bernerslee\src\main\java\it\uniba\utils\MathUtils.java">
+</file>
+</checkstyle>

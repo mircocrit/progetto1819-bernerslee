@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="it.uniba.utils.test.ControlTest" tests="15" skipped="0" failures="0" errors="0" timestamp="2019-06-01T16:04:26" hostname="Ninny" time="81.344">
+  <properties/>
+  <testcase name="Testing perfect 2nd node query" classname="it.uniba.utils.test.ControlTest" time="6.762"/>
+  <testcase name="Testing perfect 3rd node query" classname="it.uniba.utils.test.ControlTest" time="10.414"/>
+  <testcase name="Testing perfect 4th node query" classname="it.uniba.utils.test.ControlTest" time="6.586"/>
+  <testcase name="Testing perfect 5th node query" classname="it.uniba.utils.test.ControlTest" time="2.33"/>
+  <testcase name="Testing perfect 6th node query" classname="it.uniba.utils.test.ControlTest" time="2.187"/>
+  <testcase name="Testing perfect 1st edge query" classname="it.uniba.utils.test.ControlTest" time="7.254"/>
+  <testcase name="Testing perfect 2nd edge query" classname="it.uniba.utils.test.ControlTest" time="7.754"/>
+  <testcase name="Testing perfect 3rd edge query" classname="it.uniba.utils.test.ControlTest" time="7.808"/>
+  <testcase name="Testing perfect 4th edge query" classname="it.uniba.utils.test.ControlTest" time="6.458"/>
+  <testcase name="Testing perfect 5th edge query" classname="it.uniba.utils.test.ControlTest" time="6.862"/>
+  <testcase name="Testing perfect 6th edge query" classname="it.uniba.utils.test.ControlTest" time="6.57"/>
+  <testcase name="Testing runEdge" classname="it.uniba.utils.test.ControlTest" time="0.393"/>
+  <testcase name="Testing execute with an empty array" classname="it.uniba.utils.test.ControlTest" time="2.184"/>
+  <testcase name="Testing runNode" classname="it.uniba.utils.test.ControlTest" time="0.503"/>
+  <testcase name="Testing an ideal execution" classname="it.uniba.utils.test.ControlTest" time="7.274"/>
+  <system-out><![CDATA[Spreadsheet ID: 1X_WGoCJhMynh1gptMxiH5BF5DfL5uy0fF29AMjHegqw
+Spreadhsheet URL: https://docs.google.com/spreadsheets/d/1X_WGoCJhMynh1gptMxiH5BF5DfL5uy0fF29AMjHegqw
+Permission ID: anyoneWithLink
+Completed
+Spreadsheet ID: 1yZzI79yWt5boCFGnvcu6ug-EWHG1VqNDqBeGL64NYuU
+Spreadhsheet URL: https://docs.google.com/spreadsheets/d/1yZzI79yWt5boCFGnvcu6ug-EWHG1VqNDqBeGL64NYuU
+Permission ID: anyoneWithLink
+Completed
+Spreadsheet ID: 1cQSwOw2YePib2DQDU0TB4YFEMYhgTxy-hstWThQO0Nk
+Spreadhsheet URL: https://docs.google.com/spreadsheets/d/1cQSwOw2YePib2DQDU0TB4YFEMYhgTxy-hstWThQO0Nk
+Permission ID: anyoneWithLink
+Completed
+Spreadsheet ID: 1-saR5DQmDG_w8-rmczFmCttiSYAjHxJi8S_oV4XJBOs
+Spreadhsheet URL: https://docs.google.com/spreadsheets/d/1-saR5DQmDG_w8-rmczFmCttiSYAjHxJi8S_oV4XJBOs
+Permission ID: anyoneWithLink
+Completed
+Spreadsheet ID: 12uusP_NB_5_uYM3Pg8UyMPLgUN3RLLzg8ha5djVZ75g
+Spreadhsheet URL: https://docs.google.com/spreadsheets/d/12uusP_NB_5_uYM3Pg8UyMPLgUN3RLLzg8ha5djVZ75g
+Permission ID: anyoneWithLink
+Completed
+Spreadsheet ID: 1LSiERHbEfY8s1A_wWFK4sCuCUuwQT5PBXeZp-iwPXF4
+Spreadhsheet URL: https://docs.google.com/spreadsheets/d/1LSiERHbEfY8s1A_wWFK4sCuCUuwQT5PBXeZp-iwPXF4
+Permission ID: anyoneWithLink
+Completed
+Spreadsheet ID: 1p97NqAxyiC5x191HPlJZ4DPvvIsVyn8HJDq-N9eHbVE
+Spreadhsheet URL: https://docs.google.com/spreadsheets/d/1p97NqAxyiC5x191HPlJZ4DPvvIsVyn8HJDq-N9eHbVE
+Permission ID: anyoneWithLink
+Completed
+Spreadsheet ID: 19NR2GfvxQwCy9iK5B6aytP78bNjzdgNOrhOYwPGpRRg
+Spreadhsheet URL: https://docs.google.com/spreadsheets/d/19NR2GfvxQwCy9iK5B6aytP78bNjzdgNOrhOYwPGpRRg
+Permission ID: anyoneWithLink
+Completed
+Spreadsheet ID: 1McqXno4QZ7jGZ5tIaG1BXGTMy01IWR0CRl6SkM3HFUA
+Spreadhsheet URL: https://docs.google.com/spreadsheets/d/1McqXno4QZ7jGZ5tIaG1BXGTMy01IWR0CRl6SkM3HFUA
+Permission ID: anyoneWithLink
+Completed
+Spreadsheet ID: 1rUiHlLwKVy2983hjqiER-aDbCGKpSRCyuutI8YjqsTA
+Spreadhsheet URL: https://docs.google.com/spreadsheets/d/1rUiHlLwKVy2983hjqiER-aDbCGKpSRCyuutI8YjqsTA
+Permission ID: anyoneWithLink
+Completed
+]]></system-out>
+  <system-err><![CDATA[You must have data passing arguments!
+]]></system-err>
+</testsuite>

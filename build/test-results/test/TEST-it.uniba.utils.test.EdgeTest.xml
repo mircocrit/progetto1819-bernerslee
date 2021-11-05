@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="it.uniba.utils.test.EdgeTest" tests="13" skipped="0" failures="0" errors="0" timestamp="2019-06-01T16:05:47" hostname="Ninny" time="0.035">
+  <properties/>
+  <testcase name="getWeightEqualTest()" classname="it.uniba.utils.test.EdgeTest" time="0.002"/>
+  <testcase name="isWeightEdgeTest()" classname="it.uniba.utils.test.EdgeTest" time="0.002"/>
+  <testcase name="setToAssertEqualTest()" classname="it.uniba.utils.test.EdgeTest" time="0.003"/>
+  <testcase name="setWeightEqualTest()" classname="it.uniba.utils.test.EdgeTest" time="0.002"/>
+  <testcase name="EdgeWithNullArgumentTest()" classname="it.uniba.utils.test.EdgeTest" time="0.002"/>
+  <testcase name="getToAssertEqualTest()" classname="it.uniba.utils.test.EdgeTest" time="0.002"/>
+  <testcase name="getToEditArgumentTest()" classname="it.uniba.utils.test.EdgeTest" time="0.002"/>
+  <testcase name="getFromEditArgumentTest()" classname="it.uniba.utils.test.EdgeTest" time="0.003"/>
+  <testcase name="emptyWeightTest()" classname="it.uniba.utils.test.EdgeTest" time="0.002"/>
+  <testcase name="getFromAssertEqualTest()" classname="it.uniba.utils.test.EdgeTest" time="0.002"/>
+  <testcase name="EdgeWithNullArgumentWeightTest()" classname="it.uniba.utils.test.EdgeTest" time="0.003"/>
+  <testcase name="isWeightEdge()" classname="it.uniba.utils.test.EdgeTest" time="0.0"/>
+  <testcase name="setFromAssertEqualTest()" classname="it.uniba.utils.test.EdgeTest" time="0.003"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

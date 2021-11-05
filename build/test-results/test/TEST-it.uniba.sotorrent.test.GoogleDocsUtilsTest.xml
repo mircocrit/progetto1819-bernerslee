@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="it.uniba.sotorrent.test.GoogleDocsUtilsTest" tests="3" skipped="0" failures="0" errors="0" timestamp="2019-06-01T16:02:46" hostname="Ninny" time="40.547">
+  <properties/>
+  <testcase name="writeEdge" classname="it.uniba.sotorrent.test.GoogleDocsUtilsTest" time="19.977"/>
+  <testcase name="writeNode" classname="it.uniba.sotorrent.test.GoogleDocsUtilsTest" time="8.342"/>
+  <testcase name="writeSheet" classname="it.uniba.sotorrent.test.GoogleDocsUtilsTest" time="12.226"/>
+  <system-out><![CDATA[Spreadsheet ID: 1MGm1ZLCupOOwiQYkxzk-u08zP83lb1KSWJCuuLnYRaY
+Spreadhsheet URL: https://docs.google.com/spreadsheets/d/1MGm1ZLCupOOwiQYkxzk-u08zP83lb1KSWJCuuLnYRaY
+Spreadsheet ID: 19WvyjWa_nx7lidJbESFHupGTADMdQRq6nEkvqEXAAH0
+Spreadhsheet URL: https://docs.google.com/spreadsheets/d/19WvyjWa_nx7lidJbESFHupGTADMdQRq6nEkvqEXAAH0
+Spreadsheet ID: 1s3fA-wR9BDtQuqYmsNjqJskHPdLJVHf2R8as6w9CD3g
+Spreadhsheet URL: https://docs.google.com/spreadsheets/d/1s3fA-wR9BDtQuqYmsNjqJskHPdLJVHf2R8as6w9CD3g
+Spreadsheet ID: 1mGpa0-q7bQOfslZDb-WPAMSjMezatzaNbVr-_VsDA0c
+Spreadhsheet URL: https://docs.google.com/spreadsheets/d/1mGpa0-q7bQOfslZDb-WPAMSjMezatzaNbVr-_VsDA0c
+Spreadsheet ID: 15MDqJtTNx_HLXYEjnwvLSFYSVJ9VHklE2yTtsSVTmT0
+Spreadhsheet URL: https://docs.google.com/spreadsheets/d/15MDqJtTNx_HLXYEjnwvLSFYSVJ9VHklE2yTtsSVTmT0
+url: https://stackoverflow.com/questions/6607552 views: 29654
+url: https://stackoverflow.com/questions/36675521 views: 13590
+url: https://stackoverflow.com/questions/20349189 views: 5026
+url: https://stackoverflow.com/questions/22734777 views: 10869
+url: https://stackoverflow.com/questions/39919815 views: 17191
+url: https://stackoverflow.com/questions/38993877 views: 5113
+url: https://stackoverflow.com/questions/27537720 views: 4390
+url: https://stackoverflow.com/questions/23375456 views: 16048
+url: https://stackoverflow.com/questions/25373467 views: 13881
+url: https://stackoverflow.com/questions/22049248 views: 4593
+Spreadsheet ID: 1rmL_YXd1GKX0t0wY2te54lfl6qUqwVz8Cm8ABMZZvqg
+Spreadhsheet URL: https://docs.google.com/spreadsheets/d/1rmL_YXd1GKX0t0wY2te54lfl6qUqwVz8Cm8ABMZZvqg
+Permission ID: anyoneWithLink
+Completed
+Spreadsheet ID: 10M6EYWNkEJYQvnWp4XG6NE3DYLsfva9YWqhhhSPiku8
+Spreadhsheet URL: https://docs.google.com/spreadsheets/d/10M6EYWNkEJYQvnWp4XG6NE3DYLsfva9YWqhhhSPiku8
+Permission ID: anyoneWithLink
+Completed
+]]></system-out>
+  <system-err><![CDATA[]]></system-err>
+</testsuite>

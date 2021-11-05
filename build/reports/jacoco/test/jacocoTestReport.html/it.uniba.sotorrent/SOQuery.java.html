@@ -1,0 +1,638 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>SOQuery.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sna4so</a> &gt; <a href="index.source.html" class="el_package">it.uniba.sotorrent</a> &gt; <span class="el_source">SOQuery.java</span></div><h1>SOQuery.java</h1><pre class="source lang-java linenums">package it.uniba.sotorrent;
+
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
+
+import com.google.auth.oauth2.ServiceAccountCredentials;
+import com.google.cloud.bigquery.BigQuery;
+import com.google.cloud.bigquery.BigQueryOptions;
+import com.google.cloud.bigquery.FieldValueList;
+import com.google.cloud.bigquery.Job;
+import com.google.cloud.bigquery.JobException;
+import com.google.cloud.bigquery.JobId;
+import com.google.cloud.bigquery.JobInfo;
+import com.google.cloud.bigquery.QueryJobConfiguration;
+import com.google.cloud.bigquery.TableResult;
+import it.uniba.exception.DeathJobException;
+import it.uniba.exception.ParameterException;
+import it.uniba.utils.Edge;
+import it.uniba.utils.MathUtils;
+
+/**SOQuery.java &lt;&lt;Boundary&gt;&gt;
+ *  This class contains Node and Edge queries, required to get the results from google Big Query service.
+ *  Each method returns a Job, from which we can extract the result by the column labels,
+ *  using getter methods included in the class.
+ *
+ * @author bernerslee1819
+ */
+
+public final class SOQuery implements ISOQuery {
+	/**
+	 * Instance of BigQuery service.
+	 */
+	private BigQuery bigquery;
+	/**
+	 * URL of credentials JSON file.
+	 */
+	private static final String URL = &quot;http://neo.di.uniba.it/credentials/project-bernerslee-vvb56d.json&quot;;
+
+	/**
+	 * Default constructor, instantiates BigQuery API service.
+	 * 
+	 * @throws FileNotFoundException The remote JSON file with credential is 404.
+	 * @throws IOException           Malformed JSON file.
+	 */
+<span class="fc" id="L50">	public SOQuery() throws FileNotFoundException, IOException {</span>
+<span class="fc" id="L51">		bigquery = BigQueryOptions.newBuilder().setProjectId(&quot;perfect-chalice-237409&quot;)</span>
+<span class="fc" id="L52">				.setCredentials(ServiceAccountCredentials.fromStream(</span>
+<span class="fc" id="L53">						new URL(URL).openStream())).build().getService();</span>
+<span class="fc" id="L54">	}</span>
+
+	@Override
+	public Job runQuery() throws InterruptedException {
+
+			// Use standard SQL syntax for queries.
+			// See: https://cloud.google.com/bigquery/sql-reference/
+<span class="fc" id="L61">			QueryJobConfiguration queryConfig = QueryJobConfiguration</span>
+<span class="fc" id="L62">					.newBuilder(&quot;SELECT &quot; + &quot;CONCAT('https://stackoverflow.com/questions/', &quot;</span>
+							+ &quot;CAST(id as STRING)) as url, &quot; + &quot;view_count &quot;
+							+ &quot;FROM `bigquery-public-data.stackoverflow.posts_questions` &quot;
+							+ &quot;WHERE tags like '%google-bigquery%' &quot;
+							+ &quot;ORDER BY favorite_count DESC LIMIT 10&quot;)
+<span class="fc" id="L67">					.setUseLegacySql(false).build();</span>
+
+			// Create a job ID so that we can safely retry.
+<span class="fc" id="L70">			JobId jobId = JobId.of(UUID.randomUUID().toString());</span>
+<span class="fc" id="L71">			Job queryJob = bigquery.create(JobInfo.newBuilder(queryConfig).setJobId(jobId).build());</span>
+
+			// Wait for the query to complete.
+<span class="fc" id="L74">			queryJob = queryJob.waitFor();</span>
+
+			// Check for errors
+<span class="pc bpc" id="L77" title="1 of 2 branches missed.">			if (queryJob == null) {</span>
+<span class="nc" id="L78">				throw new DeathJobException(&quot;Job no longer exists (runQuery)&quot;);</span>
+<span class="pc bpc" id="L79" title="1 of 2 branches missed.">			} else if (queryJob.getStatus().getError() != null) {</span>
+				// You can also look at queryJob.getStatus().getExecutionErrors() for all
+				// errors, not just the latest one.
+<span class="nc" id="L82">				throw new RuntimeException(queryJob.getStatus().getError().toString());</span>
+			}
+<span class="fc" id="L84">			return queryJob;</span>
+	}
+
+	@Override
+	public Map&lt;String, Long&gt; getResults(final Job queryJob) throws JobException, InterruptedException {
+<span class="fc" id="L89">		Map&lt;String, Long&gt; results = new HashMap&lt;String, Long&gt;();</span>
+
+<span class="pc bpc" id="L91" title="1 of 2 branches missed.">		if (queryJob != null) {</span>
+<span class="fc" id="L92">			TableResult result = queryJob.getQueryResults();</span>
+			// Print all pages of the results.
+<span class="fc bfc" id="L94" title="All 2 branches covered.">			for (FieldValueList row : result.iterateAll()) {</span>
+<span class="fc" id="L95">				String keyUrl = row.get(&quot;url&quot;).getStringValue();</span>
+<span class="fc" id="L96">				long viewCount = row.get(&quot;view_count&quot;).getLongValue();</span>
+<span class="fc" id="L97">				System.out.printf(&quot;url: %s views: %d%n&quot;, keyUrl, viewCount);</span>
+<span class="fc" id="L98">				results.put(keyUrl, viewCount);</span>
+<span class="fc" id="L99">			}</span>
+		}
+<span class="fc" id="L101">		return results;</span>
+	}
+
+	/*
+	 * Visualizzare la lista dei primi 100 id utente (User) che hanno fatto almeno
+	 * una domanda (Question) in un dato anno, mese e giorno
+	 */
+	public Job runNodeQuestionDate(final int year, final int month, final int day, final int limit)
+			throws InterruptedException {
+		try {
+<span class="fc" id="L111">			MathUtils help = new MathUtils();</span>
+<span class="pc bpc" id="L112" title="1 of 4 branches missed.">			if (help.isData(year, month, day) &amp;&amp; limit &gt; 0) { // date is made in a good way</span>
+<span class="fc" id="L113">				QueryJobConfiguration queryConfig = QueryJobConfiguration.newBuilder(&quot;SELECT DISTINCT &quot;</span>
+						+ &quot;owner_user_id &quot;
+						+ &quot;FROM `bigquery-public-data.stackoverflow.posts_questions` &quot; + &quot;WHERE&quot;
+						+ &quot; extract(year from creation_date)=&quot; + year
+						+ &quot; and &quot; + &quot;extract(month from creation_date)=&quot;
+						+ month + &quot; and &quot; + &quot;extract(day from creation_date)=&quot; + day + &quot; and &quot;
+						+ &quot;owner_user_id IS NOT NULL&quot; + &quot; ORDER BY owner_user_id&quot;
+						+ &quot; LIMIT &quot; + limit)
+<span class="fc" id="L121">						.setUseLegacySql(false).build();</span>
+
+<span class="fc" id="L123">				JobId jobId = JobId.of(UUID.randomUUID().toString());</span>
+<span class="fc" id="L124">				Job queryJob = bigquery.create(JobInfo.newBuilder(queryConfig).setJobId(jobId).build());</span>
+<span class="fc" id="L125">				queryJob = queryJob.waitFor();</span>
+<span class="pc bpc" id="L126" title="1 of 2 branches missed.">				if (queryJob == null) {</span>
+<span class="nc" id="L127">					throw new DeathJobException(&quot;Job no longer exists (runNodeQuestionDate)&quot;);</span>
+<span class="pc bpc" id="L128" title="1 of 2 branches missed.">				} else if (queryJob.getStatus().getError() != null) {</span>
+					// You can also look at queryJob.getStatus().getExecutionErrors() for all
+					// errors, not just the latest one.
+<span class="nc" id="L131">					throw new RuntimeException(queryJob.getStatus().getError().toString());</span>
+				}
+<span class="fc" id="L133">				return queryJob;</span>
+			} else {
+<span class="fc" id="L135">				throw new ParameterException(&quot;Parameters exception (runNodeQuestionDate)&quot;);</span>
+			}
+<span class="fc" id="L137">		} catch (ParameterException e) {</span>
+<span class="fc" id="L138">			System.err.println(e.getMessage());</span>
+			// Runtime.getRuntime().exit(0);
+		}
+<span class="fc" id="L141">		return null;</span>
+	}
+
+	/*
+	 * Visualizzare la lista dei primi 100 id utente (User) che hanno dato almeno
+	 * una risposta (Answer) in un dato anno, mese e giorno.
+	 */
+
+	public Job runNodeAnswerDate(final int year, final int month, final int day, final int limit)
+			throws InterruptedException {
+		try {
+<span class="fc" id="L152">			MathUtils help = new MathUtils();</span>
+<span class="fc bfc" id="L153" title="All 2 branches covered.">			if (help.isData(year, month, day)) { // date is made in a good way</span>
+<span class="fc" id="L154">				QueryJobConfiguration queryConfig = QueryJobConfiguration.newBuilder(&quot;SELECT DISTINCT &quot;</span>
+						+ &quot;owner_user_id &quot;
+						+ &quot;FROM `bigquery-public-data.stackoverflow.posts_answers` &quot; + &quot;WHERE &quot;
+						+ &quot;extract(year from creation_date)=&quot; + year
+						+ &quot; and &quot; + &quot;extract(month from creation_date)=&quot;
+						+ month + &quot; and &quot; + &quot;extract(day from creation_date)=&quot; + day + &quot; and &quot;
+						+ &quot;owner_user_id IS NOT NULL&quot;
+						+ &quot; ORDER BY owner_user_id&quot; + &quot; LIMIT &quot; + limit)
+<span class="fc" id="L162">						.setUseLegacySql(false).build();</span>
+
+<span class="fc" id="L164">				JobId jobId = JobId.of(UUID.randomUUID().toString());</span>
+<span class="fc" id="L165">				Job queryJob = bigquery.create(JobInfo.newBuilder(queryConfig).setJobId(jobId).build());</span>
+
+<span class="fc" id="L167">				queryJob = queryJob.waitFor();</span>
+
+<span class="pc bpc" id="L169" title="1 of 2 branches missed.">				if (queryJob == null) {</span>
+<span class="nc" id="L170">					throw new DeathJobException(&quot;Job no longer exists (runNodeAnswerDate)&quot;);</span>
+<span class="pc bpc" id="L171" title="1 of 2 branches missed.">				} else if (queryJob.getStatus().getError() != null) {</span>
+					// You can also look at queryJob.getStatus().getExecutionErrors() for all
+					// errors, not just the latest one.
+<span class="nc" id="L174">					throw new RuntimeException(queryJob.getStatus().getError().toString());</span>
+
+				}
+<span class="fc" id="L177">				return queryJob;</span>
+			} else {
+<span class="fc" id="L179">				throw new ParameterException(&quot;Parameters exception (runNodeAnswerDate)&quot;);</span>
+			}
+<span class="fc" id="L181">		} catch (ParameterException e) {</span>
+<span class="fc" id="L182">			System.err.println(e.getMessage());</span>
+			}
+<span class="fc" id="L184">		return null;</span>
+	}
+
+	/*
+	 * Visualizzare la lista dei primi 100 id utente (User) che hanno fatto almeno
+	 * un Post in un dato mese, anno, giorno (un Post puÃ² essere una domanda o una
+	 * risposta).
+	 */
+
+	public Job runNodePostDate(final int year, final int month, final int day, final int limit)
+			throws InterruptedException {
+		try {
+<span class="fc" id="L196">			MathUtils help = new MathUtils();</span>
+<span class="fc bfc" id="L197" title="All 2 branches covered.">			if (help.isData(year, month, day)) { // date is made in a good way</span>
+<span class="fc" id="L198">				QueryJobConfiguration queryConfig = QueryJobConfiguration.newBuilder(&quot;SELECT DISTINCT &quot;</span>
+						+ &quot;owner_user_id &quot;
+						+ &quot;FROM `bigquery-public-data.stackoverflow.posts_*` &quot; + &quot;WHERE &quot;
+						+ &quot;extract(year from creation_date)=&quot; + year + &quot; and &quot;
+						+ &quot;extract(month from creation_date)=&quot;
+						+ month + &quot; and &quot; + &quot;extract(day from creation_date)=&quot; + day + &quot; and &quot;
+						+ &quot;owner_user_id IS NOT NULL and owner_user_id &gt;= 0 &quot;
+						+ &quot; ORDER BY owner_user_id&quot; + &quot; LIMIT &quot;
+<span class="fc" id="L206">						+ limit).setUseLegacySql(false).build();</span>
+
+<span class="fc" id="L208">				JobId jobId = JobId.of(UUID.randomUUID().toString());</span>
+<span class="fc" id="L209">				Job queryJob = bigquery.create(JobInfo.newBuilder(queryConfig).setJobId(jobId).build());</span>
+
+<span class="fc" id="L211">				queryJob = queryJob.waitFor();</span>
+
+<span class="pc bpc" id="L213" title="1 of 2 branches missed.">				if (queryJob == null) {</span>
+<span class="nc" id="L214">					throw new DeathJobException(&quot;Job no longer exists (runNodePostDate)&quot;);</span>
+<span class="pc bpc" id="L215" title="1 of 2 branches missed.">				} else if (queryJob.getStatus().getError() != null) {</span>
+					// You can also look at queryJob.getStatus().getExecutionErrors() for all
+					// errors, not just the latest one.
+<span class="nc" id="L218">					throw new RuntimeException(queryJob.getStatus().getError().toString());</span>
+
+				}
+<span class="fc" id="L221">				return queryJob;</span>
+			} else {
+<span class="fc" id="L223">				throw new ParameterException(&quot;Parameters exception (runNodePostDate)&quot;);</span>
+			}
+<span class="fc" id="L225">		} catch (ParameterException e) {</span>
+<span class="fc" id="L226">			System.err.println(e.getMessage());</span>
+			}
+<span class="fc" id="L228">		return null;</span>
+	}
+
+	/*
+	 * Visualizzare la lista dei primi 100 id utente (User) che hanno fatto almeno
+	 * una domanda (Question) su un dato argomento (Tag) in un dato mese e anno.
+	 */
+
+	public Job runNodeQuestionTag(final int year, final int month, final String tag, final int limit)
+			throws InterruptedException {
+		try {
+<span class="fc" id="L239">			MathUtils help = new MathUtils();</span>
+<span class="fc bfc" id="L240" title="All 2 branches covered.">			if (help.isDataNoDay(year, month)) { // date is made in a good way</span>
+<span class="fc" id="L241">				QueryJobConfiguration queryConfig = QueryJobConfiguration</span>
+<span class="fc" id="L242">						.newBuilder(&quot;SELECT DISTINCT &quot; + &quot;owner_user_id FROM &quot;</span>
+								+ &quot;`bigquery-public-data.stackoverflow.posts_questions`&quot;
+								+ &quot; WHERE &quot;
+								+ &quot;extract(year from creation_date)=&quot; + year + &quot; and &quot;
+								+ &quot;extract(month from creation_date)=&quot; + month
+								+ &quot; and &quot; + &quot; tags like '%&quot; + tag + &quot;%' &quot;
+								+ &quot; and &quot; + &quot;owner_user_id IS NOT NULL&quot;
+								+ &quot; ORDER BY owner_user_id&quot; + &quot; LIMIT &quot; + limit)
+<span class="fc" id="L250">						.setUseLegacySql(false).build();</span>
+
+<span class="fc" id="L252">				JobId jobId = JobId.of(UUID.randomUUID().toString());</span>
+<span class="fc" id="L253">				Job queryJob = bigquery.create(JobInfo.newBuilder(queryConfig).setJobId(jobId).build());</span>
+
+<span class="fc" id="L255">				queryJob = queryJob.waitFor();</span>
+
+<span class="pc bpc" id="L257" title="1 of 2 branches missed.">				if (queryJob == null) {</span>
+<span class="nc" id="L258">					throw new DeathJobException(&quot;Job no longer exists (runNodeQuestionTag)&quot;);</span>
+<span class="pc bpc" id="L259" title="1 of 2 branches missed.">				} else if (queryJob.getStatus().getError() != null) {</span>
+					// You can also look at queryJob.getStatus().getExecutionErrors() for all
+					// errors, not just the latest one.
+<span class="nc" id="L262">					throw new RuntimeException(queryJob.getStatus().getError().toString());</span>
+				}
+<span class="fc" id="L264">				return queryJob;</span>
+			} else {
+<span class="fc" id="L266">				throw new ParameterException(&quot;Parameters exception (runNodeQuestionTag)&quot;);</span>
+			}
+<span class="fc" id="L268">		} catch (ParameterException e) {</span>
+<span class="fc" id="L269">			System.err.println(e.getMessage());</span>
+			}
+<span class="fc" id="L271">		return null;</span>
+	}
+
+	/*
+	 * Visualizzare la lista dei primi 100 id utente (User) che hanno dato almeno
+	 * una risposta (Answer) su un dato argomento (Tag) in un dato mese e anno
+	 */
+	public Job runNodeAnswerTag(final int year, final int month, final String tag, final int limit)
+			throws InterruptedException {
+		try {
+<span class="fc" id="L281">			MathUtils help = new MathUtils();</span>
+<span class="fc bfc" id="L282" title="All 2 branches covered.">			if (help.isDataNoDay(year, month)) { // date is made in a good way</span>
+<span class="fc" id="L283">				QueryJobConfiguration queryConfig = QueryJobConfiguration</span>
+<span class="fc" id="L284">						.newBuilder(&quot;SELECT DISTINCT &quot; + &quot;a.owner_user_id FROM &quot;</span>
+								+ &quot;`bigquery-public-data.stackoverflow.posts_answers`&quot;
+								+ &quot; a &quot; + &quot;join &quot;
+								+ &quot;`bigquery-public-data.stackoverflow.posts_questions`&quot;
+								+ &quot; q on a.parent_id = q.id &quot;
+								+ &quot;WHERE q.tags like '%&quot; + tag + &quot;%' &quot; + &quot;and &quot;
+								+ &quot;extract(year from a.creation_date)=&quot; + year + &quot; and &quot;
+								+ &quot;extract(month from a.creation_date)=&quot; + month
+								+ &quot; and a.owner_user_id IS NOT NULL&quot;
+								+ &quot; ORDER BY a.owner_user_id &quot; + &quot; LIMIT &quot; + limit)
+<span class="fc" id="L294">						.setUseLegacySql(false).build();</span>
+
+<span class="fc" id="L296">				JobId jobId = JobId.of(UUID.randomUUID().toString());</span>
+<span class="fc" id="L297">				Job queryJob = bigquery.create(JobInfo.newBuilder(queryConfig).setJobId(jobId).build());</span>
+
+<span class="fc" id="L299">				queryJob = queryJob.waitFor();</span>
+
+<span class="pc bpc" id="L301" title="1 of 2 branches missed.">				if (queryJob == null) {</span>
+<span class="nc" id="L302">					throw new DeathJobException(&quot;Job no longer exists (runNodeAnswerTag)&quot;);</span>
+<span class="pc bpc" id="L303" title="1 of 2 branches missed.">				} else if (queryJob.getStatus().getError() != null) {</span>
+					// You can also look at queryJob.getStatus().getExecutionErrors() for all
+					// errors, not just the latest one.
+<span class="nc" id="L306">					throw new RuntimeException(queryJob.getStatus().getError().toString());</span>
+				}
+<span class="fc" id="L308">				return queryJob;</span>
+			} else {
+<span class="fc" id="L310">				throw new ParameterException(&quot;Parameters exception (runNodeAnswerTag)&quot;);</span>
+			}
+<span class="fc" id="L312">		}  catch (ParameterException e) {</span>
+<span class="fc" id="L313">			System.err.println(e.getMessage());</span>
+			}
+<span class="fc" id="L315">		return null;</span>
+	}
+
+	/*
+	 * Visualizzare la lista dei primi 100 id utente (User) che hanno fatto almeno
+	 * un Post su un dato argomento (Tag) in un dato mese e anno (un Post puÃ²
+	 * essere una domanda o una risposta)
+	 */
+
+	public Job runNodePostTag(final int year, final int month, final String tag, final int limit)
+			throws InterruptedException {
+		try {
+<span class="fc" id="L327">			MathUtils help = new MathUtils();</span>
+<span class="fc bfc" id="L328" title="All 2 branches covered.">			if (help.isDataNoDay(year, month)) { // date is made in a good way</span>
+<span class="fc" id="L329">				QueryJobConfiguration queryConfig = QueryJobConfiguration.newBuilder(&quot;SELECT DISTINCT &quot;</span>
+						+ &quot;owner_user_id &quot;
+						+ &quot;FROM `bigquery-public-data.stackoverflow.posts_questions` &quot; + &quot;WHERE&quot;
+						+ &quot; extract(year from creation_date)=&quot; + year + &quot; and &quot;
+						+ &quot;extract(month from creation_date)=&quot;
+						+ month + &quot; and &quot; + &quot; tags like '%&quot; + tag + &quot;%' &quot; + &quot; and &quot;
+						+ &quot;owner_user_id IS NOT NULL &quot;
+						+ &quot;UNION DISTINCT &quot; + &quot;(SELECT DISTINCT &quot; + &quot;a.owner_user_id &quot;
+						+ &quot;FROM `bigquery-public-data.stackoverflow.posts_answers` a &quot; + &quot;join &quot;
+						+ &quot;`bigquery-public-data.stackoverflow.posts_questions` q &quot;
+						+ &quot;on a.parent_id = q.id &quot;
+						+ &quot;WHERE q.tags like '%&quot; + tag + &quot;%' &quot; + &quot;and &quot;
+						+ &quot;extract(year from a.creation_date)=&quot; + year
+						+ &quot; and &quot; + &quot;extract(month from a.creation_date)=&quot; + month + &quot; and &quot;
+						+ &quot;a.owner_user_id IS NOT NULL)&quot;
+
+						+ &quot; ORDER BY owner_user_id &quot; + &quot; LIMIT &quot;
+<span class="fc" id="L346">						+ limit).setUseLegacySql(false).build();</span>
+
+<span class="fc" id="L348">				JobId jobId = JobId.of(UUID.randomUUID().toString());</span>
+<span class="fc" id="L349">				Job queryJob = bigquery.create(JobInfo.newBuilder(queryConfig).setJobId(jobId).build());</span>
+
+<span class="fc" id="L351">				queryJob = queryJob.waitFor();</span>
+
+<span class="pc bpc" id="L353" title="1 of 2 branches missed.">				if (queryJob == null) {</span>
+<span class="nc" id="L354">					throw new DeathJobException(&quot;Job no longer exists (runNodePostTag)&quot;);</span>
+<span class="pc bpc" id="L355" title="1 of 2 branches missed.">				} else if (queryJob.getStatus().getError() != null) {</span>
+					// You can also look at queryJob.getStatus().getExecutionErrors() for all
+					// errors, not just the latest one.
+<span class="nc" id="L358">					throw new RuntimeException(queryJob.getStatus().getError().toString());</span>
+				}
+<span class="fc" id="L360">				return queryJob;</span>
+			} else {
+<span class="fc" id="L362">				throw new ParameterException(&quot;Parameters exception (runNodePostTag)&quot;);</span>
+			}
+<span class="fc" id="L364">		} catch (ParameterException e) {</span>
+<span class="fc" id="L365">			System.err.println(e.getMessage());</span>
+			}
+<span class="fc" id="L367">		return null;</span>
+	}
+
+	/*
+	 * Restituisce il risultato della query calcolata dal metodo in un oggetto di
+	 * tipo Node
+	 */
+	public ArrayList&lt;String&gt; getNode(final Job query) throws JobException, InterruptedException {
+<span class="fc" id="L375">		ArrayList&lt;String&gt; out = new ArrayList&lt;String&gt;();</span>
+
+<span class="fc bfc" id="L377" title="All 2 branches covered.">		if (query != null) {</span>
+<span class="fc" id="L378">			TableResult res = query.getQueryResults();</span>
+<span class="fc bfc" id="L379" title="All 2 branches covered.">			for (FieldValueList row : res.iterateAll()) {</span>
+<span class="fc" id="L380">				String in = row.get(&quot;owner_user_id&quot;).getStringValue();</span>
+<span class="fc" id="L381">				out.add(in);</span>
+<span class="fc" id="L382">			}</span>
+		}
+<span class="fc" id="L384">		return out;</span>
+	}
+
+	/*
+	 * Visualizzare la lista delle prime 100 triple (from, to, weight) relative a
+	 * domande (Question) poste da un determinato utente.
+	 */
+	public Job runEdgeQuestionWeight(final int user, final int limit) throws InterruptedException {
+
+<span class="fc" id="L393">			QueryJobConfiguration queryConfig = QueryJobConfiguration.newBuilder(</span>
+					&quot;SELECT DISTINCT a.owner_user_id as us_from, q.owner_user_id as us_to, &quot;
+							+ &quot;COUNT(*) as weight &quot;
+							+ &quot;FROM `bigquery-public-data.stackoverflow.posts_answers` a&quot;
+							+ &quot;  join `bigquery-public-data.stackoverflow.posts_questions` &quot;
+							+ &quot;q on a.parent_id = q.id &quot;
+							+ &quot;where q.owner_user_id=&quot; + user + &quot; and &quot;
+							+ &quot;q.owner_user_id IS NOT NULL and a.owner_user_id IS NOT NULL &quot;
+							+ &quot;GROUP BY a.owner_user_id, q.owner_user_id &quot;
+							+ &quot;ORDER BY us_from, us_to &quot; + &quot;LIMIT &quot;
+							+ limit)
+<span class="fc" id="L404">					.setUseLegacySql(false).build();</span>
+
+<span class="fc" id="L406">			JobId jobId = JobId.of(UUID.randomUUID().toString());</span>
+<span class="fc" id="L407">			Job queryJob = bigquery.create(JobInfo.newBuilder(queryConfig).setJobId(jobId).build());</span>
+
+<span class="fc" id="L409">			queryJob = queryJob.waitFor();</span>
+
+<span class="pc bpc" id="L411" title="1 of 2 branches missed.">			if (queryJob == null) {</span>
+<span class="nc" id="L412">				throw new DeathJobException(&quot;Job no longer exists (runEdgeQuestionWeight)&quot;);</span>
+<span class="pc bpc" id="L413" title="1 of 2 branches missed.">			} else if (queryJob.getStatus().getError() != null) {</span>
+				// You can also look at queryJob.getStatus().getExecutionErrors() for all
+				// errors, not just the latest one.
+<span class="nc" id="L416">				throw new RuntimeException(queryJob.getStatus().getError().toString());</span>
+			}
+<span class="fc" id="L418">			return queryJob;</span>
+	}
+
+	/*
+	 * Visualizzare la lista delle prime 100 triple (from, to, weight) relative a
+	 * risposte (Answer) date da un determinato utente.
+	 */
+	public Job runEdgeAnswerWeight(final int userId, final int limit) throws InterruptedException {
+
+<span class="fc" id="L427">			QueryJobConfiguration queryConfig = QueryJobConfiguration.newBuilder(&quot;select distinct &quot;</span>
+					+ &quot;a.owner_user_id as us_from, &quot; + &quot;q.owner_user_id as us_to, &quot;
+					+ &quot;count(*) as weight &quot;
+					+ &quot;from `bigquery-public-data.stackoverflow.posts_answers` a &quot; + &quot;join &quot;
+					+ &quot;`bigquery-public-data.stackoverflow.posts_questions` q &quot;
+					+ &quot;on a.parent_id=q.id &quot;
+					+ &quot;where a.owner_user_id=&quot; + userId
+					+ &quot; and q.owner_user_id is not null and &quot;
+					+ &quot;a.owner_user_id is not null &quot;
+					+ &quot;group by a.owner_user_id, q.owner_user_id &quot;
+					+ &quot;order by us_from, us_to &quot; + &quot;limit &quot; + limit)
+<span class="fc" id="L438">					.setUseLegacySql(false).build();</span>
+<span class="fc" id="L439">			JobId jobId = JobId.of(UUID.randomUUID().toString());</span>
+<span class="fc" id="L440">			Job queryJob = bigquery.create(JobInfo.newBuilder(queryConfig).setJobId(jobId).build());</span>
+
+<span class="fc" id="L442">			queryJob = queryJob.waitFor();</span>
+
+<span class="pc bpc" id="L444" title="1 of 2 branches missed.">			if (queryJob == null) {</span>
+<span class="nc" id="L445">				throw new DeathJobException(&quot;Job no longer exists (runEdgeAnswerWeight)&quot;);</span>
+<span class="pc bpc" id="L446" title="1 of 2 branches missed.">			} else if (queryJob.getStatus().getError() != null) {</span>
+				// You can also look at queryJob.getStatus().getExecutionErrors() for all
+				// errors, not just the latest one.
+<span class="nc" id="L449">				throw new RuntimeException(queryJob.getStatus().getError().toString());</span>
+
+			}
+<span class="fc" id="L452">			return queryJob;</span>
+	}
+
+	/*
+	 * Visualizzare la lista delle prime 100 triple (from, to) relative a domande
+	 * (Question) poste da un determinato utente.
+	 */
+	public Job runEdgeQuestion(final int userId, final int limit) throws InterruptedException {
+<span class="fc" id="L460">			QueryJobConfiguration queryConfig = QueryJobConfiguration.newBuilder(&quot;select distinct &quot;</span>
+					+ &quot;a.owner_user_id as us_from, &quot; + &quot;q.owner_user_id as us_to &quot;
+					+ &quot;from `bigquery-public-data.stackoverflow.posts_answers` a &quot; + &quot;join &quot;
+					+ &quot;`bigquery-public-data.stackoverflow.posts_questions` q &quot;
+					+ &quot;on a.parent_id=q.id &quot;
+					+ &quot;where q.owner_user_id=&quot; + userId + &quot; and a.owner_user_id is not null &quot;
+					+ &quot;group by a.owner_user_id, q.owner_user_id &quot;
+					+ &quot;order by us_from, us_to &quot; + &quot;limit &quot; + limit)
+<span class="fc" id="L468">					.setUseLegacySql(false).build();</span>
+<span class="fc" id="L469">			JobId jobId = JobId.of(UUID.randomUUID().toString());</span>
+<span class="fc" id="L470">			Job queryJob = bigquery.create(JobInfo.newBuilder(queryConfig).setJobId(jobId).build());</span>
+
+<span class="fc" id="L472">			queryJob = queryJob.waitFor();</span>
+
+<span class="pc bpc" id="L474" title="1 of 2 branches missed.">			if (queryJob == null) {</span>
+<span class="nc" id="L475">				throw new DeathJobException(&quot;Job no longer exists (runEdgeQuestion)&quot;);</span>
+<span class="pc bpc" id="L476" title="1 of 2 branches missed.">			} else if (queryJob.getStatus().getError() != null) {</span>
+				// You can also look at queryJob.getStatus().getExecutionErrors() for all
+				// errors, not just the latest one.
+<span class="nc" id="L479">				throw new RuntimeException(queryJob.getStatus().getError().toString());</span>
+
+			}
+<span class="fc" id="L482">			return queryJob;</span>
+	}
+
+	/*
+	 * Visualizzare la lista delle prime 100 coppie (from, to) relative a domande
+	 * (Question) poste in un dato anno, mese e giorno.
+	 */
+	public Job runEdgeQuestionDate(final int year, final int month, final int day, final int limit)
+			throws InterruptedException {
+		try {
+<span class="fc" id="L492">			MathUtils help = new MathUtils();</span>
+<span class="fc bfc" id="L493" title="All 2 branches covered.">			if (help.isData(year, month, day)) {</span>
+<span class="fc" id="L494">				QueryJobConfiguration queryConfig = QueryJobConfiguration</span>
+<span class="fc" id="L495">						.newBuilder(&quot;select distinct &quot; + &quot;a.owner_user_id as us_from, &quot;</span>
+								+ &quot;q.owner_user_id as us_to from &quot;
+								+ &quot;`bigquery-public-data.stackoverflow.posts_answers`&quot;
+								+ &quot; a join &quot;
+								+ &quot;`bigquery-public-data.stackoverflow.posts_questions`&quot;
+								+ &quot; q on a.parent_id=q.id &quot;
+								+ &quot;where extract(year from q.creation_date)=&quot;
+								+ year + &quot; and &quot;
+								+ &quot;extract(month from q.creation_date)=&quot; + month
+								+ &quot; and &quot;
+								+ &quot;extract(day from q.creation_date)=&quot; + day
+								+ &quot; and a.owner_user_id is not null &quot;
+								+ &quot; and q.owner_user_id is not null &quot;
+								+ &quot;group by a.owner_user_id, q.owner_user_id &quot;
+								+ &quot;order by us_from, us_to &quot; + &quot;limit &quot; + limit)
+<span class="fc" id="L510">						.setUseLegacySql(false).build();</span>
+<span class="fc" id="L511">				JobId jobId = JobId.of(UUID.randomUUID().toString());</span>
+<span class="fc" id="L512">				Job queryJob = bigquery.create(JobInfo.newBuilder(queryConfig).setJobId(jobId).build());</span>
+
+<span class="fc" id="L514">				queryJob = queryJob.waitFor();</span>
+
+<span class="pc bpc" id="L516" title="1 of 2 branches missed.">				if (queryJob == null) {</span>
+<span class="nc" id="L517">					throw new DeathJobException(&quot;Job no longer exists (runEdgeQuestionDate)&quot;);</span>
+<span class="pc bpc" id="L518" title="1 of 2 branches missed.">				} else if (queryJob.getStatus().getError() != null) {</span>
+					// You can also look at queryJob.getStatus().getExecutionErrors() for all
+					// errors, not just the latest one.
+<span class="nc" id="L521">					throw new RuntimeException(queryJob.getStatus().getError().toString());</span>
+
+				}
+<span class="fc" id="L524">				return queryJob;</span>
+			} else {
+<span class="fc" id="L526">				throw new ParameterException(&quot;Parameters exception (runEdgeQuestionDate)&quot;);</span>
+				}
+<span class="fc" id="L528">		} catch (ParameterException e) {</span>
+<span class="fc" id="L529">			System.err.println(e.getMessage());</span>
+			}
+<span class="fc" id="L531">		return null;</span>
+	}
+
+	/*
+	 * Visualizzare la lista delle prime 100 triple (from, to, weight) relative a
+	 * domande (Question) poste in un dato anno, mese e giorno
+	 */
+	public Job runEdgeQuestionDateWeight(final int year, final int month, final int day, final int limit)
+			throws InterruptedException {
+		try {
+<span class="fc" id="L541">			MathUtils help = new MathUtils();</span>
+<span class="fc bfc" id="L542" title="All 2 branches covered.">			if (help.isData(year, month, day)) {</span>
+<span class="fc" id="L543">				QueryJobConfiguration queryConfig = QueryJobConfiguration.newBuilder(&quot;SELECT &quot;</span>
+						+ &quot;a.owner_user_id as `us_from`, q.owner_user_id as `us_to`,&quot;
+						+ &quot; count(*) as weight &quot; + &quot;FROM &quot;
+						+ &quot;`bigquery-public-data.stackoverflow.posts_questions` q &quot; + &quot;join &quot;
+						+ &quot;`bigquery-public-data.stackoverflow.posts_answers` a &quot;
+						+ &quot;on a.parent_id = q.id &quot; + &quot;WHERE &quot;
+						+ &quot;extract(year from q.creation_date)=&quot; + year + &quot; and &quot;
+						+ &quot;extract(month from q.creation_date)=&quot; + month + &quot; and &quot;
+						+ &quot;extract(day from q.creation_date)=&quot; + day + &quot; and &quot;
+						+ &quot;a.owner_user_id is not null &quot; + &quot;and &quot;
+						+ &quot;q.owner_user_id is not null &quot; + &quot;group by &quot;
+						+ &quot;a.owner_user_id, q.owner_user_id &quot;
+						+ &quot;order by &quot; + &quot;a.owner_user_id, q.owner_user_id &quot;
+<span class="fc" id="L556">						+ &quot;limit &quot; + limit).setUseLegacySql(false)</span>
+<span class="fc" id="L557">						.build();</span>
+
+<span class="fc" id="L559">				JobId jobId = JobId.of(UUID.randomUUID().toString());</span>
+<span class="fc" id="L560">				Job queryJob = bigquery.create(JobInfo.newBuilder(queryConfig).setJobId(jobId).build());</span>
+
+<span class="fc" id="L562">				queryJob = queryJob.waitFor();</span>
+
+<span class="pc bpc" id="L564" title="1 of 2 branches missed.">				if (queryJob == null) {</span>
+<span class="nc" id="L565">					throw new DeathJobException(&quot;Job no longer exists (runEdgeQuestionDateWeight)&quot;);</span>
+<span class="pc bpc" id="L566" title="1 of 2 branches missed.">				} else if (queryJob.getStatus().getError() != null) {</span>
+					// You can also look at queryJob.getStatus().getExecutionErrors() for all
+					// errors, not just the latest one.
+<span class="nc" id="L569">					throw new RuntimeException(queryJob.getStatus().getError().toString());</span>
+				}
+<span class="fc" id="L571">				return queryJob;</span>
+			} else {
+<span class="fc" id="L573">				throw new ParameterException(&quot;Parameters exception (runEdgeQuestionDateWeight)&quot;);</span>
+			}
+<span class="fc" id="L575">		} catch (ParameterException e) {</span>
+<span class="fc" id="L576">			System.err.println(e.getMessage());</span>
+			}
+
+<span class="fc" id="L579">		return null;</span>
+	}
+
+	/*
+	 * Visualizzare la lista delle prime 100 coppie (from, to) relative a risposte
+	 * (Answer) date da un determinato utente.
+	 */
+	public Job runEdgeAnswer(final int userId, final int limit) throws InterruptedException {
+
+<span class="fc" id="L588">			QueryJobConfiguration queryConfig = QueryJobConfiguration.newBuilder(&quot;select distinct &quot;</span>
+					+ &quot;a.owner_user_id as us_from, &quot; + &quot;q.owner_user_id as us_to &quot;
+					+ &quot;from `bigquery-public-data.stackoverflow.posts_answers` a &quot; + &quot;join &quot;
+					+ &quot;`bigquery-public-data.stackoverflow.posts_questions` q &quot;
+					+ &quot;on a.parent_id=q.id &quot;
+					+ &quot;where a.owner_user_id=&quot; + userId + &quot; and q.owner_user_id is not null &quot;
+					+ &quot;group by a.owner_user_id, q.owner_user_id &quot; + &quot;order by us_from, us_to &quot;
+					+ &quot;limit &quot; + limit)
+<span class="fc" id="L596">					.setUseLegacySql(false).build();</span>
+<span class="fc" id="L597">			JobId jobId = JobId.of(UUID.randomUUID().toString());</span>
+<span class="fc" id="L598">			Job queryJob = bigquery.create(JobInfo.newBuilder(queryConfig).setJobId(jobId).build());</span>
+
+<span class="fc" id="L600">			queryJob = queryJob.waitFor();</span>
+
+<span class="pc bpc" id="L602" title="1 of 2 branches missed.">			if (queryJob == null) {</span>
+<span class="nc" id="L603">				throw new DeathJobException(&quot;Job no longer exists (runEdgeAnswer)&quot;);</span>
+<span class="pc bpc" id="L604" title="1 of 2 branches missed.">			} else if (queryJob.getStatus().getError() != null) {</span>
+				// You can also look at queryJob.getStatus().getExecutionErrors() for all
+				// errors, not just the latest one.
+<span class="nc" id="L607">				throw new RuntimeException(queryJob.getStatus().getError().toString());</span>
+
+			}
+<span class="fc" id="L610">			return queryJob;</span>
+	}
+
+	/*
+	 * Restituisce il risultato della query calcolata dal metodo in un oggetto di
+	 * tipo Edge
+	 */
+	public ArrayList&lt;Edge&gt; getEdge(final Job query) throws JobException, InterruptedException {
+<span class="fc" id="L618">		ArrayList&lt;Edge&gt; out = new ArrayList&lt;Edge&gt;();</span>
+<span class="fc bfc" id="L619" title="All 2 branches covered.">		if (query != null) {</span>
+<span class="fc" id="L620">			TableResult res = query.getQueryResults();</span>
+<span class="fc bfc" id="L621" title="All 2 branches covered.">			for (FieldValueList row : res.iterateAll()) {</span>
+				Edge in;
+<span class="fc bfc" id="L623" title="All 2 branches covered.">				if (row.size() == 2) {</span>
+<span class="fc" id="L624">					in = new Edge(row.get(&quot;us_from&quot;).getStringValue(),</span>
+<span class="fc" id="L625">							row.get(&quot;us_to&quot;).getStringValue());</span>
+				} else {
+<span class="fc" id="L627">					in = new Edge(row.get(&quot;us_from&quot;).getStringValue(),</span>
+<span class="fc" id="L628">							row.get(&quot;us_to&quot;).getStringValue(),</span>
+<span class="fc" id="L629">							row.get(&quot;weight&quot;).getStringValue());</span>
+				}
+<span class="fc" id="L631">				out.add(in);</span>
+<span class="fc" id="L632">			}</span>
+		}
+<span class="fc" id="L634">		return out;</span>
+	}
+
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.0.201801022044</span></div></body></html>

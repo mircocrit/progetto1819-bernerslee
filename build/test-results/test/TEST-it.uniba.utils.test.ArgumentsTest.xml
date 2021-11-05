@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="it.uniba.utils.test.ArgumentsTest" tests="26" skipped="0" failures="0" errors="0" timestamp="2019-06-01T16:04:26" hostname="Ninny" time="0.137">
+  <properties/>
+  <testcase name="readExceptionUserTest()" classname="it.uniba.utils.test.ArgumentsTest" time="0.01"/>
+  <testcase name="getTableTest()" classname="it.uniba.utils.test.ArgumentsTest" time="0.005"/>
+  <testcase name="getDayTest()" classname="it.uniba.utils.test.ArgumentsTest" time="0.009"/>
+  <testcase name="getWeightTest()" classname="it.uniba.utils.test.ArgumentsTest" time="0.002"/>
+  <testcase name="readExceptionTagTest()" classname="it.uniba.utils.test.ArgumentsTest" time="0.004"/>
+  <testcase name="getMonthTest()" classname="it.uniba.utils.test.ArgumentsTest" time="0.003"/>
+  <testcase name="monthEmptyTest()" classname="it.uniba.utils.test.ArgumentsTest" time="0.004"/>
+  <testcase name="getEdgeTest()" classname="it.uniba.utils.test.ArgumentsTest" time="0.003"/>
+  <testcase name="getTagTest()" classname="it.uniba.utils.test.ArgumentsTest" time="0.003"/>
+  <testcase name="readExceptionLimitTest()" classname="it.uniba.utils.test.ArgumentsTest" time="0.003"/>
+  <testcase name="constructorArgumentsEdgeTest()" classname="it.uniba.utils.test.ArgumentsTest" time="0.004"/>
+  <testcase name="tableEmptyTest()" classname="it.uniba.utils.test.ArgumentsTest" time="0.001"/>
+  <testcase name="dayEmptyTest()" classname="it.uniba.utils.test.ArgumentsTest" time="0.002"/>
+  <testcase name="yearEmptyTest()" classname="it.uniba.utils.test.ArgumentsTest" time="0.001"/>
+  <testcase name="getYearTest()" classname="it.uniba.utils.test.ArgumentsTest" time="0.006"/>
+  <testcase name="userEmptytest()" classname="it.uniba.utils.test.ArgumentsTest" time="0.003"/>
+  <testcase name="EmptyTest()" classname="it.uniba.utils.test.ArgumentsTest" time="0.002"/>
+  <testcase name="constructorArgumentsWeightTest()" classname="it.uniba.utils.test.ArgumentsTest" time="0.004"/>
+  <testcase name="readExceptionMonthTest()" classname="it.uniba.utils.test.ArgumentsTest" time="0.005"/>
+  <testcase name="readExceptionYearTest()" classname="it.uniba.utils.test.ArgumentsTest" time="0.005"/>
+  <testcase name="limitEmptyTest()" classname="it.uniba.utils.test.ArgumentsTest" time="0.001"/>
+  <testcase name="readExceptionDayTest()" classname="it.uniba.utils.test.ArgumentsTest" time="0.005"/>
+  <testcase name="tagEmptyTest()" classname="it.uniba.utils.test.ArgumentsTest" time="0.001"/>
+  <testcase name="readExceptionTableEmptyTest()" classname="it.uniba.utils.test.ArgumentsTest" time="0.002"/>
+  <testcase name="getUserTest()" classname="it.uniba.utils.test.ArgumentsTest" time="0.01"/>
+  <testcase name="getLimit()" classname="it.uniba.utils.test.ArgumentsTest" time="0.003"/>
+  <system-out><![CDATA[]]></system-out>
+  <system-err><![CDATA[Multiple user mentionated
+Check your command.
+Multiple tag mentionated
+Check your command.
+Multiple limit mentionated
+Check your command.
+Invalid parameter for edge
+Check your command.
+Invalid parameter for weight
+Check your command.
+Multiple month mentionated
+Check your command.
+Multiple day mentionated
+Check your command.
+Multiple day mentionated
+Check your command.
+Multiple day mentionated
+Check your command.
+]]></system-err>
+</testsuite>

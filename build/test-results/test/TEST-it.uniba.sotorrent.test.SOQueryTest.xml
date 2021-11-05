@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<testsuite name="it.uniba.sotorrent.test.SOQueryTest" tests="26" skipped="0" failures="0" errors="0" timestamp="2019-06-01T16:03:27" hostname="Ninny" time="58.935">
+  <properties/>
+  <testcase name="runEdgeAnswerWeightParameterExceptionTest()" classname="it.uniba.sotorrent.test.SOQueryTest" time="2.359"/>
+  <testcase name="runNodeAnswerDateParameterExceptionTest()" classname="it.uniba.sotorrent.test.SOQueryTest" time="0.044"/>
+  <testcase name="runNodeQuestionTagParameterExceptionTest()" classname="it.uniba.sotorrent.test.SOQueryTest" time="0.048"/>
+  <testcase name="runNodeQuestionDateDeathJobExceptionTest()" classname="it.uniba.sotorrent.test.SOQueryTest" time="2.267"/>
+  <testcase name="runNodeQuestionDateTest()" classname="it.uniba.sotorrent.test.SOQueryTest" time="2.626"/>
+  <testcase name="runNodeAnswerDateTest()" classname="it.uniba.sotorrent.test.SOQueryTest" time="6.599"/>
+  <testcase name="runEdgeAnswerParameterExceptionTest()" classname="it.uniba.sotorrent.test.SOQueryTest" time="2.288"/>
+  <testcase name="runEdgeQuestionParameterExceptionTest()" classname="it.uniba.sotorrent.test.SOQueryTest" time="2.159"/>
+  <testcase name="runEdgeQuestionWeightParameterExceptionTest()" classname="it.uniba.sotorrent.test.SOQueryTest" time="2.344"/>
+  <testcase name="runNodePostDateParameterExceptionTest()" classname="it.uniba.sotorrent.test.SOQueryTest" time="0.041"/>
+  <testcase name="runEdgeQuestionDateTest()" classname="it.uniba.sotorrent.test.SOQueryTest" time="3.183"/>
+  <testcase name="runEdgeQuestionTest()" classname="it.uniba.sotorrent.test.SOQueryTest" time="3.346"/>
+  <testcase name="runNodePostTagTest()" classname="it.uniba.sotorrent.test.SOQueryTest" time="3.319"/>
+  <testcase name="runNodeAnswerTagParameterExceptionTest()" classname="it.uniba.sotorrent.test.SOQueryTest" time="0.046"/>
+  <testcase name="runEdgeQuestionDateWeightParameterExceptionTest()" classname="it.uniba.sotorrent.test.SOQueryTest" time="0.043"/>
+  <testcase name="runNodeQuestionDateParameterExceptionTest()" classname="it.uniba.sotorrent.test.SOQueryTest" time="0.044"/>
+  <testcase name="runEdgeAnswerTest()" classname="it.uniba.sotorrent.test.SOQueryTest" time="3.471"/>
+  <testcase name="runEdgeQuestionDateWeightTest()" classname="it.uniba.sotorrent.test.SOQueryTest" time="3.183"/>
+  <testcase name="runEdgeQuestionDateParameterExceptionTest()" classname="it.uniba.sotorrent.test.SOQueryTest" time="0.056"/>
+  <testcase name="runNodeAnswerTagTest()" classname="it.uniba.sotorrent.test.SOQueryTest" time="3.099"/>
+  <testcase name="runEdgeAnswerWeightTest()" classname="it.uniba.sotorrent.test.SOQueryTest" time="3.192"/>
+  <testcase name="runNodePostTagParameterExceptionTest()" classname="it.uniba.sotorrent.test.SOQueryTest" time="0.046"/>
+  <testcase name="runNodeQuestionTagTest()" classname="it.uniba.sotorrent.test.SOQueryTest" time="3.19"/>
+  <testcase name="runNodePostDateTest()" classname="it.uniba.sotorrent.test.SOQueryTest" time="5.022"/>
+  <testcase name="runEdgeQuestionWeightTest()" classname="it.uniba.sotorrent.test.SOQueryTest" time="3.524"/>
+  <testcase name="runQueryTest()" classname="it.uniba.sotorrent.test.SOQueryTest" time="3.379"/>
+  <system-out><![CDATA[url: https://stackoverflow.com/questions/6607552 views: 29654
+url: https://stackoverflow.com/questions/36675521 views: 13590
+url: https://stackoverflow.com/questions/20349189 views: 5026
+url: https://stackoverflow.com/questions/22734777 views: 10869
+url: https://stackoverflow.com/questions/39919815 views: 17191
+url: https://stackoverflow.com/questions/38993877 views: 5113
+url: https://stackoverflow.com/questions/27537720 views: 4390
+url: https://stackoverflow.com/questions/23375456 views: 16048
+url: https://stackoverflow.com/questions/25373467 views: 13881
+url: https://stackoverflow.com/questions/22049248 views: 4593
+]]></system-out>
+  <system-err><![CDATA[Parameters exception (runNodeAnswerDate)
+Parameters exception (runNodeQuestionTag)
+Parameters exception (runNodePostDate)
+Parameters exception (runNodeAnswerTag)
+Parameters exception (runEdgeQuestionDateWeight)
+Parameters exception (runNodeQuestionDate)
+Parameters exception (runEdgeQuestionDate)
+Parameters exception (runNodePostTag)
+]]></system-err>
+</testsuite>

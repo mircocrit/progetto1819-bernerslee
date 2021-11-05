@@ -1,0 +1,297 @@
+<?xml version="1.0" encoding="UTF-8"?><!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Strict//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-strict.dtd"><html xmlns="http://www.w3.org/1999/xhtml" lang="it"><head><meta http-equiv="Content-Type" content="text/html;charset=UTF-8"/><link rel="stylesheet" href="../jacoco-resources/report.css" type="text/css"/><link rel="shortcut icon" href="../jacoco-resources/report.gif" type="image/gif"/><title>Arguments.java</title><link rel="stylesheet" href="../jacoco-resources/prettify.css" type="text/css"/><script type="text/javascript" src="../jacoco-resources/prettify.js"></script></head><body onload="window['PR_TAB_WIDTH']=4;prettyPrint()"><div class="breadcrumb" id="breadcrumb"><span class="info"><a href="../jacoco-sessions.html" class="el_session">Sessions</a></span><a href="../index.html" class="el_report">sna4so</a> &gt; <a href="index.source.html" class="el_package">it.uniba.utils</a> &gt; <span class="el_source">Arguments.java</span></div><h1>Arguments.java</h1><pre class="source lang-java linenums">package it.uniba.utils;
+
+import it.uniba.exception.ReadException;
+
+/**Arguments.java &lt;&lt;Entity&gt;&gt;
+ * This class uses the string taken by an external class and stores the data into
+ * local variables, ready to be read with included getter methods.
+ * It includes data fields(yy-mm-dd), an user id, a limit field, a weight field,
+ * a tag field and an edge field.
+ * The constructor includes different patterns to distinguish the type of the string value
+ * and setting the relative value of the attribute.
+ */
+public class Arguments {
+
+	// attributi
+	private String table; // the table from which data must be taken
+	private String tag;
+<span class="pc" id="L18">	private int year = -1;</span>
+<span class="pc" id="L19">	private int month = -1;</span>
+<span class="pc" id="L20">	private int day = -1;</span>
+<span class="pc" id="L21">	private int limit = -1;</span>
+<span class="pc" id="L22">	private boolean weight = false;</span>
+<span class="pc" id="L23">	private boolean edge = false;</span>
+<span class="pc" id="L24">	private int user = -1;</span>
+	private static final int NUM3 = 3;
+	/**Arguments.java &lt;&lt;Entity&gt;&gt;
+	 * This class uses the string taken by an external class and stores the data into
+	 * local variables, ready to be read with included getter methods.
+	 * It includes data fields(yy-mm-dd), an user id, a limit field, a weight field,
+	 * a tag field and an edge field.
+	 * The constructor includes different patterns to distinguish the type of the string value
+	 * and setting the relative value of the attribute.
+	 */
+	public int getUser() {
+<span class="fc" id="L35">		return user;</span>
+	}
+	/**Arguments.java &lt;&lt;Entity&gt;&gt;
+	 * This class uses the string taken by an external class and stores the data into
+	 * local variables, ready to be read with included getter methods.
+	 * It includes data fields(yy-mm-dd), an user id, a limit field, a weight field,
+	 * a tag field and an edge field.
+	 * The constructor includes different patterns to distinguish the type of the string value
+	 * and setting the relative value of the attribute.
+	 */
+	public boolean getWeight() {
+<span class="fc" id="L46">		return weight;</span>
+	}
+	/**Arguments.java &lt;&lt;Entity&gt;&gt;
+	 * This class uses the string taken by an external class and stores the data into
+	 * local variables, ready to be read with included getter methods.
+	 * It includes data fields(yy-mm-dd), an user id, a limit field, a weight field,
+	 * a tag field and an edge field.
+	 * The constructor includes different patterns to distinguish the type of the string value
+	 * and setting the relative value of the attribute.
+	 */
+	public boolean getEdge() {
+<span class="fc" id="L57">		return edge;</span>
+	}
+	/**Arguments.java &lt;&lt;Entity&gt;&gt;
+	 * This class uses the string taken by an external class and stores the data into
+	 * local variables, ready to be read with included getter methods.
+	 * It includes data fields(yy-mm-dd), an user id, a limit field, a weight field,
+	 * a tag field and an edge field.
+	 * The constructor includes different patterns to distinguish the type of the string value
+	 * and setting the relative value of the attribute.
+	 */
+	public int getYear() {
+<span class="fc" id="L68">		return year;</span>
+	}
+	/**Arguments.java &lt;&lt;Entity&gt;&gt;
+	 * This class uses the string taken by an external class and stores the data into
+	 * local variables, ready to be read with included getter methods.
+	 * It includes data fields(yy-mm-dd), an user id, a limit field, a weight field,
+	 * a tag field and an edge field.
+	 * The constructor includes different patterns to distinguish the type of the string value
+	 * and setting the relative value of the attribute.
+	 */
+	public int getMonth() {
+<span class="fc" id="L79">		return month;</span>
+	}
+	/**Arguments.java &lt;&lt;Entity&gt;&gt;
+	 * This class uses the string taken by an external class and stores the data into
+	 * local variables, ready to be read with included getter methods.
+	 * It includes data fields(yy-mm-dd), an user id, a limit field, a weight field,
+	 * a tag field and an edge field.
+	 * The constructor includes different patterns to distinguish the type of the string value
+	 * and setting the relative value of the attribute.
+	 */
+	public int getDay() {
+<span class="fc" id="L90">		return day;</span>
+	}
+	/**Arguments.java &lt;&lt;Entity&gt;&gt;
+	 * This class uses the string taken by an external class and stores the data into
+	 * local variables, ready to be read with included getter methods.
+	 * It includes data fields(yy-mm-dd), an user id, a limit field, a weight field,
+	 * a tag field and an edge field.
+	 * The constructor includes different patterns to distinguish the type of the string value
+	 * and setting the relative value of the attribute.
+	 */
+	public String getTable() {
+<span class="fc" id="L101">		return table;</span>
+	}
+	/**Arguments.java &lt;&lt;Entity&gt;&gt;
+	 * This class uses the string taken by an external class and stores the data into
+	 * local variables, ready to be read with included getter methods.
+	 * It includes data fields(yy-mm-dd), an user id, a limit field, a weight field,
+	 * a tag field and an edge field.
+	 * The constructor includes different patterns to distinguish the type of the string value
+	 * and setting the relative value of the attribute.
+	 */
+	public int getLimit() {
+<span class="fc" id="L112">		return limit;</span>
+	}
+	/**Arguments.java &lt;&lt;Entity&gt;&gt;
+	 * This class uses the string taken by an external class and stores the data into
+	 * local variables, ready to be read with included getter methods.
+	 * It includes data fields(yy-mm-dd), an user id, a limit field, a weight field,
+	 * a tag field and an edge field.
+	 * The constructor includes different patterns to distinguish the type of the string value
+	 * and setting the relative value of the attribute.
+	 */
+	public String getTag() {
+<span class="fc" id="L123">		return tag;</span>
+	}
+	/**Arguments.java &lt;&lt;Entity&gt;&gt;
+	 * This class uses the string taken by an external class and stores the data into
+	 * local variables, ready to be read with included getter methods.
+	 * It includes data fields(yy-mm-dd), an user id, a limit field, a weight field,
+	 * a tag field and an edge field.
+	 * The constructor includes different patterns to distinguish the type of the string value
+	 * and setting the relative value of the attribute.
+	 */
+	public boolean empty() {
+<span class="pc bpc" id="L134" title="3 of 16 branches missed.">	return table == null &amp;&amp; tag == null &amp;&amp; year == -1</span>
+			&amp;&amp; month == -1 &amp;&amp; day == -1 &amp;&amp; limit == -1 &amp;&amp; user == -1 &amp;&amp; !weight;
+	}
+	/**Arguments.java &lt;&lt;Entity&gt;&gt;
+	 * This class uses the string taken by an external class and stores the data into
+	 * local variables, ready to be read with included getter methods.
+	 * It includes data fields(yy-mm-dd), an user id, a limit field, a weight field,
+	 * a tag field and an edge field.
+	 * The constructor includes different patterns to distinguish the type of the string value
+	 * and setting the relative value of the attribute.
+	 */
+	public boolean yearEmpty() {
+<span class="fc bfc" id="L146" title="All 2 branches covered.">		return (year == -1);</span>
+	}
+	/**Arguments.java &lt;&lt;Entity&gt;&gt;
+	 * This class uses the string taken by an external class and stores the data into
+	 * local variables, ready to be read with included getter methods.
+	 * It includes data fields(yy-mm-dd), an user id, a limit field, a weight field,
+	 * a tag field and an edge field.
+	 * The constructor includes different patterns to distinguish the type of the string value
+	 * and setting the relative value of the attribute.
+	 */
+	public boolean monthEmpty() {
+<span class="fc bfc" id="L157" title="All 2 branches covered.">		return (month == -1);</span>
+	}
+	/**Arguments.java &lt;&lt;Entity&gt;&gt;
+	 * This class uses the string taken by an external class and stores the data into
+	 * local variables, ready to be read with included getter methods.
+	 * It includes data fields(yy-mm-dd), an user id, a limit field, a weight field,
+	 * a tag field and an edge field.
+	 * The constructor includes different patterns to distinguish the type of the string value
+	 * and setting the relative value of the attribute.
+	 */
+	public boolean dayEmpty() {
+<span class="fc bfc" id="L168" title="All 2 branches covered.">		return (day == -1);</span>
+	}
+	/**Arguments.java &lt;&lt;Entity&gt;&gt;
+	 * This class uses the string taken by an external class and stores the data into
+	 * local variables, ready to be read with included getter methods.
+	 * It includes data fields(yy-mm-dd), an user id, a limit field, a weight field,
+	 * a tag field and an edge field.
+	 * The constructor includes different patterns to distinguish the type of the string value
+	 * and setting the relative value of the attribute.
+	 */
+	public boolean limitEmpty() {
+<span class="fc bfc" id="L179" title="All 2 branches covered.">		return (limit == -1);</span>
+	}
+	/**Arguments.java &lt;&lt;Entity&gt;&gt;
+	 * This class uses the string taken by an external class and stores the data into
+	 * local variables, ready to be read with included getter methods.
+	 * It includes data fields(yy-mm-dd), an user id, a limit field, a weight field,
+	 * a tag field and an edge field.
+	 * The constructor includes different patterns to distinguish the type of the string value
+	 * and setting the relative value of the attribute.
+	 */
+	public boolean tableEmpty() {
+<span class="fc bfc" id="L190" title="All 2 branches covered.">		return (table == null);</span>
+	}
+	/**Arguments.java &lt;&lt;Entity&gt;&gt;
+	 * This class uses the string taken by an external class and stores the data into
+	 * local variables, ready to be read with included getter methods.
+	 * It includes data fields(yy-mm-dd), an user id, a limit field, a weight field,
+	 * a tag field and an edge field.
+	 * The constructor includes different patterns to distinguish the type of the string value
+	 * and setting the relative value of the attribute.
+	 */
+	public boolean tagEmpty() {
+<span class="fc bfc" id="L201" title="All 2 branches covered.">		return (tag == null);</span>
+	}
+	/**Arguments.java &lt;&lt;Entity&gt;&gt;
+	 * This class uses the string taken by an external class and stores the data into
+	 * local variables, ready to be read with included getter methods.
+	 * It includes data fields(yy-mm-dd), an user id, a limit field, a weight field,
+	 * a tag field and an edge field.
+	 * The constructor includes different patterns to distinguish the type of the string value
+	 * and setting the relative value of the attribute.
+	 */
+	public boolean userEmpty() {
+<span class="fc bfc" id="L212" title="All 2 branches covered.">		return (user == -1);</span>
+	}
+
+<span class="nc" id="L215">	private Arguments() { // rende impossibile dall'esterno la possibilità di istanziare</span>
+	// un oggetto di tipo arguments senza aver avvalorato gli attributi in modo corretto
+
+<span class="nc" id="L218">	}</span>
+
+<span class="fc" id="L220">	public Arguments(final String[] input) {</span>
+		try {
+<span class="fc" id="L222">			String patternType = &quot;type=&quot;;</span>
+<span class="fc" id="L223">			String patternYear = &quot;yyyy=&quot;;</span>
+<span class="fc" id="L224">			String patternMonth = &quot;mm=&quot;;</span>
+<span class="fc" id="L225">			String patternDay = &quot;dd=&quot;;</span>
+<span class="fc" id="L226">			String patternLimit = &quot;limit=&quot;;</span>
+<span class="fc" id="L227">			String patternTag = &quot;taglike=&quot;;</span>
+<span class="fc" id="L228">			String patternUser = &quot;user=&quot;;</span>
+<span class="fc" id="L229">			String patternEdge = &quot;edge=&quot;;</span>
+<span class="fc" id="L230">			String patternWeight = &quot;weight=&quot;;</span>
+
+			// for each attribute find it in the array and evaluate the object
+<span class="fc bfc" id="L233" title="All 2 branches covered.">	for (int i = 0; i &lt; input.length; i++) {</span>
+<span class="fc bfc" id="L234" title="All 2 branches covered.">	if (input[i].regionMatches(0, patternType, 0, patternType.length())) {</span>
+<span class="pc bpc" id="L235" title="1 of 2 branches missed.">		if (!tableEmpty()) {</span>
+<span class="nc" id="L236">		 throw new ReadException(&quot;Multiple type mentionated&quot;);</span>
+		}
+<span class="fc" id="L238">		table = input[i].substring(patternType.length(), input[i].length());</span>
+<span class="fc bfc" id="L239" title="All 2 branches covered.">		} else if (input[i].regionMatches(0, patternYear, 0, patternYear.length())) {</span>
+<span class="fc bfc" id="L240" title="All 2 branches covered.">		if (!yearEmpty()) {</span>
+<span class="fc" id="L241">		 throw new ReadException(&quot;Multiple day mentionated&quot;);</span>
+		}
+<span class="fc" id="L243">		 year = Integer.parseInt(input[i].substring(patternYear.length(), input[i].length()));</span>
+<span class="fc bfc" id="L244" title="All 2 branches covered.">		} else if (input[i].regionMatches(0, patternMonth, 0, patternMonth.length())) {</span>
+<span class="fc bfc" id="L245" title="All 2 branches covered.">		if (!monthEmpty()) {</span>
+<span class="fc" id="L246">		 throw new ReadException(&quot;Multiple month mentionated&quot;);</span>
+		}
+<span class="fc" id="L248">		 month = Integer.parseInt(input[i].substring(patternMonth.length(), input[i].length()));</span>
+<span class="fc bfc" id="L249" title="All 2 branches covered.">		} else if (input[i].regionMatches(0, patternDay, 0, patternDay.length())) {</span>
+<span class="fc bfc" id="L250" title="All 2 branches covered.">		if (!dayEmpty()) {</span>
+<span class="fc" id="L251">		 throw new ReadException(&quot;Multiple day mentionated&quot;);</span>
+		}
+<span class="fc" id="L253">		 day = Integer.parseInt(input[i].substring(patternDay.length(), input[i].length()));</span>
+<span class="fc bfc" id="L254" title="All 2 branches covered.">		} else if (input[i].regionMatches(0, patternLimit, 0, patternDay.length())) {</span>
+<span class="fc bfc" id="L255" title="All 2 branches covered.">		if (!limitEmpty()) {</span>
+<span class="fc" id="L256">		 throw new ReadException(&quot;Multiple limit mentionated&quot;);</span>
+		}
+<span class="fc" id="L258">		 limit = Integer.parseInt(input[i].substring(patternLimit.length(), input[i].length()));</span>
+<span class="fc bfc" id="L259" title="All 2 branches covered.">		} else if (input[i].regionMatches(0, patternTag, 0, patternTag.length())) {</span>
+<span class="fc bfc" id="L260" title="All 2 branches covered.">		if (!tagEmpty()) {</span>
+<span class="fc" id="L261">		 throw new ReadException(&quot;Multiple tag mentionated&quot;);</span>
+		}
+<span class="fc" id="L263">		 tag = input[i].substring(patternTag.length(), input[i].length());</span>
+<span class="fc bfc" id="L264" title="All 2 branches covered.">		} else if (input[i].regionMatches(0, patternUser, 0, patternUser.length())) {</span>
+<span class="fc bfc" id="L265" title="All 2 branches covered.">		if (!userEmpty()) {</span>
+<span class="fc" id="L266">		 throw new ReadException(&quot;Multiple user mentionated&quot;);</span>
+		}
+<span class="fc" id="L268">		   user = Integer.parseInt(input[i].substring(patternUser.length(), input[i].length()));</span>
+<span class="fc bfc" id="L269" title="All 2 branches covered.">		} else if (input[i].regionMatches(0, patternEdge, 0, patternEdge.length())) {</span>
+<span class="fc bfc" id="L270" title="All 2 branches covered.">		if (input[i].substring(patternEdge.length(), input[i].length()).equals(&quot;yes&quot;)) {</span>
+<span class="fc" id="L271">		  edge = true;</span>
+<span class="fc bfc" id="L272" title="All 2 branches covered.">		} else if (!input[i].substring(patternEdge.length(), input[i].length()).equals(&quot;no&quot;)) {</span>
+<span class="fc" id="L273">		  throw new ReadException(&quot;Invalid parameter for edge&quot;);</span>
+		}
+<span class="fc bfc" id="L275" title="All 2 branches covered.">		} else if (input[i].regionMatches(0, patternWeight, 0, patternWeight.length())) {</span>
+<span class="fc bfc" id="L276" title="All 2 branches covered.">		if (input[i].substring(patternWeight.length(), input[i].length()).equals(&quot;yes&quot;)) {</span>
+<span class="fc" id="L277">			weight = true;</span>
+<span class="fc bfc" id="L278" title="All 2 branches covered.">		} else if (!input[i].substring(patternWeight.length(), input[i].length()).equals(&quot;no&quot;)) {</span>
+<span class="fc" id="L279">						throw new ReadException(&quot;Invalid parameter for weight&quot;);</span>
+					}
+				}
+			}
+
+<span class="fc" id="L284">		} catch (ReadException e) {</span>
+<span class="fc" id="L285">			System.err.println(e.getMessage());</span>
+<span class="fc" id="L286">			System.err.println(&quot;Check your command.&quot;);</span>
+			// Runtime.getRuntime().exit(0);
+			//Percorso Fantasma (morirà in runEdge)
+			//input = new String[4];
+<span class="fc" id="L290">			input[0] = &quot;type=answer&quot;;</span>
+<span class="fc" id="L291">			input[1] = &quot;user=1&quot;;</span>
+<span class="fc" id="L292">			input[2] = &quot;edge=yes&quot;;</span>
+<span class="fc" id="L293">			input[NUM3] = &quot;limit=0&quot;;</span>
+<span class="fc" id="L294">		}</span>
+<span class="fc" id="L295">	}</span>
+}
+</pre><div class="footer"><span class="right">Created with <a href="http://www.jacoco.org/jacoco">JaCoCo</a> 0.8.0.201801022044</span></div></body></html>
